@@ -2,8 +2,11 @@ package handler
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -66,7 +69,12 @@ func (h *VehicleHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 
 	vehicle, err := h.repo.GetByID(r.Context(), id)
 	if err != nil {
-		jsonError(w, "vehicle not found", http.StatusNotFound)
+		if errors.Is(err, sql.ErrNoRows) {
+			jsonError(w, "vehicle not found", http.StatusNotFound)
+		} else {
+			log.Printf("GetByID error for id=%s: %v", id, err)
+			jsonError(w, "internal server error", http.StatusInternalServerError)
+		}
 		return
 	}
 
