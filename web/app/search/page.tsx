@@ -1,5 +1,5 @@
 import { getMakes, searchVehicles, SearchParams } from "@/lib/api";
-import VehicleCard from "@/components/vehicle/VehicleCard";
+import VehicleListCard from "@/components/vehicle/VehicleListCard";
 import FilterSidebar from "@/components/search/FilterSidebar";
 import SortBar from "@/components/search/SortBar";
 import Pagination from "@/components/search/Pagination";
@@ -62,9 +62,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
               <p className="text-sm mt-1">Try adjusting your filters</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mt-4">
+            <div className="space-y-4 mt-4">
               {result.vehicles.map((v) => (
-                <VehicleCard key={v.id} vehicle={v} />
+                <VehicleListCard key={v.id} vehicle={v} />
               ))}
             </div>
           )}

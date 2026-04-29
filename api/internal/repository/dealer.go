@@ -33,6 +33,15 @@ func (r *DealerRepository) GetByClickdealerID(ctx context.Context, clickdealerID
 	return &d, nil
 }
 
+func (r *DealerRepository) GetBySlug(ctx context.Context, slug string) (*model.Dealer, error) {
+	var d model.Dealer
+	err := r.db.GetContext(ctx, &d, `SELECT * FROM dealers WHERE slug = $1 AND is_active = true`, slug)
+	if err != nil {
+		return nil, err
+	}
+	return &d, nil
+}
+
 func (r *DealerRepository) GetByEmail(ctx context.Context, email string) (*model.Dealer, error) {
 	var d model.Dealer
 	err := r.db.GetContext(ctx, &d, `SELECT * FROM dealers WHERE email = $1 AND is_active = true`, email)

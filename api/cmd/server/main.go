@@ -52,7 +52,7 @@ func main() {
 	enquiryRepo := repository.NewEnquiryRepository(db)
 
 	vehicleHandler := handler.NewVehicleHandler(vehicleRepo, rdb)
-	dealerHandler := handler.NewDealerHandler(dealerRepo)
+	dealerHandler := handler.NewDealerHandler(dealerRepo, vehicleRepo)
 	enquiryHandler := handler.NewEnquiryHandler(enquiryRepo, vehicleRepo, dealerRepo)
 	syncHandler := handler.NewSyncHandler(vehicleRepo, dealerRepo)
 
@@ -72,6 +72,7 @@ func main() {
 		r.Get("/vehicles", vehicleHandler.Search)
 		r.Get("/vehicles/{id}", vehicleHandler.GetByID)
 		r.Get("/makes", vehicleHandler.GetMakes)
+		r.Get("/dealers/{slug}", dealerHandler.GetPublicProfile)
 		r.Post("/enquiries", enquiryHandler.Create)
 		r.Post("/auth/login", dealerHandler.Login)
 

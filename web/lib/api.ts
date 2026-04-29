@@ -48,6 +48,12 @@ export interface Dealer {
   website_url?: string;
 }
 
+export interface DealerPublicProfile {
+  dealer: Dealer;
+  vehicles: Vehicle[];
+  total: number;
+}
+
 export interface SearchResult {
   vehicles: Vehicle[];
   total: number;
@@ -64,10 +70,15 @@ export interface SearchParams {
   max_price?: string;
   min_year?: string;
   max_year?: string;
+  min_mileage?: string;
   max_mileage?: string;
   fuel_type?: string;
   transmission?: string;
   body_type?: string;
+  colour?: string;
+  doors?: string;
+  postcode?: string;
+  distance?: string;
   sort?: string;
   page?: string;
   per_page?: string;
@@ -91,6 +102,14 @@ export async function getVehicle(id: string): Promise<Vehicle> {
     next: { revalidate: 300 },
   });
   if (!res.ok) throw new Error("Vehicle not found");
+  return res.json();
+}
+
+export async function getDealerBySlug(slug: string): Promise<DealerPublicProfile> {
+  const res = await fetch(`${API_BASE}/api/v1/dealers/${slug}`, {
+    next: { revalidate: 300 },
+  });
+  if (!res.ok) throw new Error("Dealer not found");
   return res.json();
 }
 

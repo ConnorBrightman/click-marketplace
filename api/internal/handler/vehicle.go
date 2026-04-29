@@ -212,9 +212,17 @@ func parseSearchParams(r *http.Request) model.SearchParams {
 	if v, err := strconv.Atoi(q.Get("max_year")); err == nil {
 		p.MaxYear = v
 	}
+	if v, err := strconv.Atoi(q.Get("min_mileage")); err == nil {
+		p.MinMileage = v
+	}
 	if v, err := strconv.Atoi(q.Get("max_mileage")); err == nil {
 		p.MaxMileage = v
 	}
+	if v, err := strconv.Atoi(q.Get("doors")); err == nil {
+		p.Doors = v
+	}
+	p.Colour = q.Get("colour")
+	p.Postcode = q.Get("postcode")
 	if v, err := strconv.Atoi(q.Get("page")); err == nil && v > 0 {
 		p.Page = v
 	} else {

@@ -21,6 +21,12 @@ type Dealer struct {
 	UpdatedAt       time.Time  `db:"updated_at" json:"updated_at"`
 }
 
+type DealerPublicProfile struct {
+	Dealer   *Dealer   `json:"dealer"`
+	Vehicles []Vehicle `json:"vehicles"`
+	Total    int       `json:"total"`
+}
+
 type DealerDashboard struct {
 	ActiveListings  int `json:"active_listings"`
 	TotalViews      int `json:"total_views"`

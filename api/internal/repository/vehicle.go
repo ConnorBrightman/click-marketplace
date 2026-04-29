@@ -57,6 +57,11 @@ func (r *VehicleRepository) Search(ctx context.Context, params model.SearchParam
 		args = append(args, params.MaxYear)
 		argIdx++
 	}
+	if params.MinMileage > 0 {
+		conditions = append(conditions, fmt.Sprintf("v.mileage >= $%d", argIdx))
+		args = append(args, params.MinMileage)
+		argIdx++
+	}
 	if params.MaxMileage > 0 {
 		conditions = append(conditions, fmt.Sprintf("v.mileage <= $%d", argIdx))
 		args = append(args, params.MaxMileage)
@@ -77,9 +82,24 @@ func (r *VehicleRepository) Search(ctx context.Context, params model.SearchParam
 		args = append(args, params.BodyType)
 		argIdx++
 	}
+	if params.Colour != "" {
+		conditions = append(conditions, fmt.Sprintf("LOWER(v.colour) LIKE LOWER($%d)", argIdx))
+		args = append(args, "%"+params.Colour+"%")
+		argIdx++
+	}
+	if params.Doors > 0 {
+		conditions = append(conditions, fmt.Sprintf("v.doors = $%d", argIdx))
+		args = append(args, params.Doors)
+		argIdx++
+	}
 	if params.DealerID != "" {
 		conditions = append(conditions, fmt.Sprintf("v.dealer_id = $%d", argIdx))
 		args = append(args, params.DealerID)
+		argIdx++
+	}
+	if params.Postcode != "" {
+		conditions = append(conditions, fmt.Sprintf("UPPER(REPLACE(d.address_postcode, ' ', '')) LIKE UPPER($%d)", argIdx))
+		args = append(args, strings.ReplaceAll(params.Postcode, " ", "")+"%")
 		argIdx++
 	}
 	if params.Q != "" {
@@ -116,7 +136,7 @@ func (r *VehicleRepository) Search(ctx context.Context, params model.SearchParam
 	}
 	offset := (params.Page - 1) * params.PerPage
 
-	countQuery := fmt.Sprintf(`SELECT COUNT(*) FROM vehicles v %s`, where)
+	countQuery := fmt.Sprintf(`SELECT COUNT(*) FROM vehicles v JOIN dealers d ON d.id = v.dealer_id %s`, where)
 	var total int
 	if err := r.db.GetContext(ctx, &total, countQuery, args...); err != nil {
 		return nil, 0, err

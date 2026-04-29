@@ -51,11 +51,15 @@ type SearchParams struct {
 	MaxPrice     int
 	MinYear      int
 	MaxYear      int
+	MinMileage   int
 	MaxMileage   int
 	FuelType     string
 	Transmission string
 	BodyType     string
+	Colour       string
+	Doors        int
 	DealerID     string
+	Postcode     string
 	Sort         string
 	Page         int
 	PerPage      int

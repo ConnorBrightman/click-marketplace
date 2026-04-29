@@ -108,7 +108,7 @@ export default function EnquiryForm({ vehicleId, vehicleName }: Props) {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="w-full bg-teal-400 hover:bg-teal-500 disabled:opacity-50 text-navy-500 font-bold py-3 rounded-lg transition-colors"
+          className="w-full bg-teal-400 hover:bg-teal-500 disabled:opacity-50 text-white font-bold py-3 rounded-lg transition-colors"
         >
           {status === "loading" ? "Sending..." : "Send Enquiry"}
         </button>

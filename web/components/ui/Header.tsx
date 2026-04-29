@@ -31,21 +31,14 @@ function NavLinks({ mobile, onClose }: { mobile?: boolean; onClose?: () => void 
             href={`/search?vehicle_type=${type}`}
             className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
               isActive(type)
-                ? "bg-teal-400 text-navy-500 font-semibold"
-                : "text-gray-300 hover:text-white hover:bg-navy-600"
+                ? "text-teal-600 font-semibold bg-teal-50"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             }`}
             onClick={onClose}
           >
             {label}
           </Link>
         ))}
-        <Link
-          href="/dealer"
-          className="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-navy-600 transition-colors"
-          onClick={onClose}
-        >
-          Dealer Portal
-        </Link>
       </>
     );
   }
@@ -56,21 +49,15 @@ function NavLinks({ mobile, onClose }: { mobile?: boolean; onClose?: () => void 
         <Link
           key={type}
           href={`/search?vehicle_type=${type}`}
-          className={`px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+          className={`px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
             isActive(type)
-              ? "bg-teal-400 text-navy-500 font-semibold"
-              : "text-gray-300 hover:text-white hover:bg-navy-600"
+              ? "text-teal-600 bg-teal-50"
+              : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
           }`}
         >
           {label}
         </Link>
       ))}
-      <Link
-        href="/dealer"
-        className="ml-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-navy-600 rounded-lg transition-colors text-sm font-medium"
-      >
-        Dealer Portal
-      </Link>
     </>
   );
 }
@@ -79,16 +66,16 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="bg-navy-500 text-white sticky top-0 z-50 shadow-lg">
+    <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Logo />
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-0.5">
             <Suspense fallback={
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 {NAV_TYPES.map(({ label }) => (
-                  <span key={label} className="px-3 py-2 text-gray-300 text-sm font-medium">{label}</span>
+                  <span key={label} className="px-3 py-1.5 text-gray-400 text-sm font-medium">{label}</span>
                 ))}
               </div>
             }>
@@ -99,13 +86,13 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/dealer"
-              className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
             >
-              Sign In
+              Dealer sign in
             </Link>
             <Link
               href="/search?vehicle_type=car"
-              className="bg-teal-400 hover:bg-teal-500 text-navy-500 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
+              className="bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
             >
               Find a Vehicle
             </Link>
@@ -113,7 +100,7 @@ export default function Header() {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-navy-600 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-500"
             aria-label="Toggle menu"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -127,7 +114,7 @@ export default function Header() {
         </div>
 
         {menuOpen && (
-          <div className="md:hidden border-t border-navy-600 py-3 space-y-1">
+          <div className="md:hidden border-t border-gray-100 py-3 space-y-1">
             <Suspense fallback={null}>
               <NavLinks mobile onClose={() => setMenuOpen(false)} />
             </Suspense>

@@ -9,15 +9,43 @@ import (
 	"github.com/clickdealer/click-marketplace/api/internal/middleware"
 	"github.com/clickdealer/click-marketplace/api/internal/model"
 	"github.com/clickdealer/click-marketplace/api/internal/repository"
+	"github.com/go-chi/chi/v5"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type DealerHandler struct {
-	repo *repository.DealerRepository
+	repo        *repository.DealerRepository
+	vehicleRepo *repository.VehicleRepository
 }
 
-func NewDealerHandler(repo *repository.DealerRepository) *DealerHandler {
-	return &DealerHandler{repo: repo}
+func NewDealerHandler(repo *repository.DealerRepository, vehicleRepo *repository.VehicleRepository) *DealerHandler {
+	return &DealerHandler{repo: repo, vehicleRepo: vehicleRepo}
+}
+
+func (h *DealerHandler) GetPublicProfile(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	dealer, err := h.repo.GetBySlug(r.Context(), slug)
+	if err != nil {
+		jsonError(w, "dealer not found", http.StatusNotFound)
+		return
+	}
+
+	vehicles, total, err := h.vehicleRepo.Search(r.Context(), model.SearchParams{
+		DealerID: dealer.ID,
+		PerPage:  100,
+		Page:     1,
+		Sort:     "recently_listed",
+	})
+	if err != nil {
+		vehicles = []model.Vehicle{}
+		total = 0
+	}
+
+	jsonResponse(w, model.DealerPublicProfile{
+		Dealer:   dealer,
+		Vehicles: vehicles,
+		Total:    total,
+	})
 }
 
 type loginRequest struct {
