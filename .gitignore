@@ -1,0 +1,19 @@
+# Node
+web/node_modules/
+web/.next/
+web/.env.local
+
+# Go
+api/server
+api/tmp/
+
+# Env
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+postgres_data/

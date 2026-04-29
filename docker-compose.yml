@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: clickmarketplace
+      POSTGRES_USER: clickmarket
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clickmarket -d clickmarketplace"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://clickmarket:secret@postgres:5432/clickmarketplace?sslmode=disable
+      REDIS_URL: redis:6379
+      JWT_SECRET: dev-jwt-secret-change-in-prod
+      API_KEY: dev-api-key-change-in-prod
+      PORT: "8080"
+      SMTP_HOST: ""
+      SMTP_PORT: "587"
+      SMTP_FROM: "noreply@clickdealer.co.uk"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      API_URL: http://api:8080
+    depends_on:
+      - api
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+      - /app/.next
+
+volumes:
+  postgres_data:
