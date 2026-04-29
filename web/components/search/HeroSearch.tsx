@@ -106,7 +106,7 @@ export default function HeroSearch({ makes }: Props) {
   return (
     <form
       onSubmit={handleSearch}
-      className="bg-white rounded-2xl shadow-xl border border-gray-200 max-w-3xl mx-auto overflow-hidden"
+      className="bg-white rounded-2xl shadow-xl border border-gray-200 w-full overflow-hidden"
     >
       {/* Vehicle type tabs */}
       <div className="flex border-b border-gray-100">

@@ -20,14 +20,14 @@ const config: Config = {
         },
         // ClickMarket brand — buyer-facing accent
         teal: {
-          50:  "#f0fdf9",
-          100: "#ccfbf1",
-          200: "#99f6e4",
-          300: "#5eead4",
-          400: "#2dd4bf",
-          500: "#14b8a6",
-          600: "#0d9488",
-          700: "#0f766e",
+          50:  "#f0f4ff",
+          100: "#dde5f7",
+          200: "#b8c8ee",
+          300: "#7a9ad4",
+          400: "#3b5fad",
+          500: "#1e3a8a",
+          600: "#182f72",
+          700: "#12245a",
         },
         // ClickDealer brand — dealer-facing accent only
         dealer: {

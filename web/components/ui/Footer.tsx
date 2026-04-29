@@ -40,11 +40,13 @@ export default function Footer() {
             href="https://www.clickdealer.co.uk"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-gray-400 hover:text-gray-700 transition-colors flex items-center gap-1"
+            className="flex items-center gap-1.5 hover:opacity-75 transition-opacity"
           >
-            Powered by{" "}
-            <span className="font-bold text-dealer-400">Click</span>
-            <span className="font-bold text-navy-500">Dealer</span>
+            <span className="text-xs text-gray-400">Powered by</span>
+            <span className="text-sm font-bold tracking-tight">
+              <span className="text-dealer-400">Click</span>
+              <span className="text-navy-400">Dealer</span>
+            </span>
           </a>
         </div>
       </div>
